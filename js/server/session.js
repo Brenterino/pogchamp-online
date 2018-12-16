@@ -7,17 +7,22 @@ module.exports = class Session {
 	}
 
 	open() {
-		console.log('Session was opened.');
+		let address = this._socket.handshake.address;
+	    console.log('New session opened from ' + address);
 
-		this.onEnter(this._socket);
-		this.onMovement(this._socket);
-		this.onChat(this._socket);
-		this.onDisconnect(this._socket);
+		this.attachListeners(this._socket);
 	}
 
 	close() {
 		console.log('Session was closed.');
 		// do other stuff
+	}
+
+	attachListeners(socket) {
+		this.onEnter(socket);
+		this.onMovement(socket);
+		this.onChat(socket);
+		this.onDisconnect(socket);
 	}
 
 	onEnter(socket) {
@@ -60,7 +65,7 @@ module.exports = class Session {
 
 	onDisconnect(socket) {
 		socket.on('disconnect', function(data) {
-			// clean up
+			console.log("Socket disconnected");
 		});
 	}
 }
