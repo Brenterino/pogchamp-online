@@ -5,15 +5,22 @@ class Client {
         this.socket = io.connect();
 
         this.socket.on('enterResponse', data => {
-            this.game.addPlayer(data.id, data.name);
+            this.game.addPlayer(data);
         });
-
-        this.join();
     }
 
     join() {
         console.log("sending enter message!");
         this.socket.emit('enter');
+    }
+
+    sendMovement(player) {
+        this.socket.emit('movement', {
+            id: player.id,
+            x: player.x,
+            y: player.y,
+            angle: player.angle
+        });
     }
 }
 

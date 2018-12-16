@@ -12,6 +12,7 @@ class Game {
     preload() {
         // load sprites
         phaser.load.image('background', 'assets/background.png');
+        phaser.load.image('icon', 'assets/player/icon.png');
 
         console.log("Game preloaded");
     }
@@ -23,11 +24,10 @@ class Game {
         this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
         this.enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
-        game.add.tileSprite(0, 0, 1280, 720, 'background');
+        phaser.add.tileSprite(0, 0, 1280, 720, 'background');
 
+        client.join();
         console.log("Game created");
-
-        // send client joined message
     }
 
     inputFocus(sprite) {
@@ -40,18 +40,57 @@ class Game {
 
     update() {
         // update method
+        if (this.player == null) {
+            return;
+        }
+
+        this.handleMovement();
     }
 
     handleMovement() {
-        // handle movement
+        var moved = false;
+        var icon = this.player.icon;
+
+        if (this.upKey.isDown) {
+            icon.y -= this.player.speed;
+            moved = true;
+        } else if (this.downKey.isDown) {
+            icon.y += this.player.speed;
+            moved = true;
+        }
+
+        if (this.leftKey.isDown) {
+            icon.x -= this.player.speed;
+            moved = true;
+        } else if (this.rightKey.isDown) {
+            icon.x += this.player.speed;
+            moved = true;
+        }
+
+        if (moved) {
+            client.sendMovement(this.player);
+        }
     }
 
     handleRotation() {
         // handle rotation
     }
 
-    addPlayer(id, name) {
-        console.log("Adding player, id: " + id + " and name: " + name);
+    addPlayer(data) {
+        console.log("Adding player");
+        console.log(data);
+
+        this.player = {
+            id: data.id,
+            name: data.name,
+            x: data.x,
+            y: data.y,
+            angle: data.angle,
+            speed: 3,
+            icon: phaser.add.sprite(data.x, data.y, 'icon')
+        };
+
+        this.players[data.id] = this.player;
     }
 
     movePlayer(id, x, y) {
