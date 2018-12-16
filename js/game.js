@@ -11,6 +11,7 @@ class Game {
 
     preload() {
         // load sprites
+        console.log("loading sprites");
     }
 
     create() {
