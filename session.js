@@ -9,10 +9,10 @@ module.exports = class Session {
 	sessionOpened() {
 		console.log('Session was opened.');
 
-		let processPlayerEntryHandle = (function() { this.processPlayerEntry(); }).bind(this);
-		let processPlayerMoveHandle = (function() { this.processPlayerMove(); }).bind(this);
-		let processChatMessageHandle = (function() { this.processChatMessage(); }).bind(this);
-		let sessionClosedHandle = (function() { this.sessionClosed(); }).bind(this);
+		let processPlayerEntryHandle = (function(msg) { this.processPlayerEntry(msg); }).bind(this);
+		let processPlayerMoveHandle  = (function(msg) { this.processPlayerMove(msg);  }).bind(this);
+		let processChatMessageHandle = (function(msg) { this.processChatMessage(msg); }).bind(this);
+		let sessionClosedHandle      = (function(msg) { this.sessionClosed(msg);      }).bind(this);
 
 		this._socket.on('enter', processPlayerEntryHandle);
 		this._socket.on('move', processPlayerMoveHandle);
