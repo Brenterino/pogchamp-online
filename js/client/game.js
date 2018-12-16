@@ -10,7 +10,6 @@ class Game {
     }
 
     preload() {
-        // load sprites
         phaser.load.image('background', 'assets/background.png');
         phaser.load.image('icon', 'assets/player/icon.png');
 
@@ -43,6 +42,7 @@ class Game {
     update() {
         // update method
         if (this.player == null) {
+            console.log("Not updating because player is null");
             return;
         }
 
@@ -83,8 +83,6 @@ class Game {
     }
 
     addSelf(data) {
-        console.log("Adding self");
-        console.log(data);
 
         this.player = {
             id: data.id,
@@ -136,15 +134,11 @@ class Game {
         toMove.icon.y = data.y;
     }
 
-    sendMessage(data) {
-        // method to send message to server
-    }
-
     sentMessage(id, data) {
         // handle incoming message
     }
 
     removePlayer(id) {
-        // remove player from your game
+        // remove player from game
     }
 }

@@ -1,4 +1,4 @@
-var Player  = require('./player.js');
+var Player = require('./player.js');
 
 module.exports = class Session {
 
