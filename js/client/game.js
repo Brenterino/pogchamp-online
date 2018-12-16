@@ -1,87 +1,75 @@
-class Game {
+import Phaser from 'phaser';
+import Client from "./client.js";
+
+export default class Game extends Phaser.Scene {
 
     constructor() {
-        this.player = null;
-        this.players = [];
-
-        phaser.state.add('Game', this);
-        phaser.state.start('Game');
-    }
-
-    init() {
-        phaser.stage.disableVisibilityChange = true;
+        super('GameScene');
     }
 
     preload() {
-        phaser.load.image('background', 'assets/background.png');
-        phaser.load.image('icon', 'assets/player/icon.png');
+        this.player = null;
+        this.players = [];
+        this.client = new Client();
 
+        this.load.image('background', 'assets/background.png');
+        this.load.image('icon', 'assets/player/icon.png');
+        
         console.log("Game preloaded");
     }
 
     create() {
-        this.upKey = phaser.input.keyboard.addKey(Phaser.Keyboard.UP);
-        this.downKey = phaser.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-        this.leftKey = phaser.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-        this.rightKey = phaser.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-        this.qKey = phaser.input.keyboard.addKey(Phaser.Keyboard.Q);
-        this.eKey = phaser.input.keyboard.addKey(Phaser.Keyboard.E);
-        this.enterKey = phaser.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.cursors = this.input.keyboard.createCursorKeys();
+        this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
-        phaser.add.tileSprite(0, 0, 1280, 720, 'background');
+        this.add.image(0, 0, 'background').setOrigin(0, 0);
+        this.add.image(0, 0, 'icon').setOrigin(0, 0);
 
-        client.sendJoin();
+        this.client.init(this);
+
         console.log("Game created");
     }
 
-    inputFocus(sprite) {
-        sprite.canvasInput.focus();
-    }
-
-    createInput(x, y) {
-        // textbox input
-    }
-
     update() {
-        // update method
         if (this.player == null) {
             console.log("Not updating because player is null");
             return;
         }
 
-        this.handleMovement();
+       this.handleMovement();
     }
 
     handleMovement() {
         const icon = this.player.icon;
         let moved = false;
 
-        if (this.upKey.isDown) {
+        if (this.cursors.up.isDown) {
             icon.y -= this.player.speed;
             moved = true;
-        } else if (this.downKey.isDown) {
+        } else if (this.cursors.down.isDown) {
             icon.y += this.player.speed;
             moved = true;
         }
 
-        if (this.leftKey.isDown) {
+        if (this.cursors.left.isDown) {
             icon.x -= this.player.speed;
             moved = true;
-        } else if (this.rightKey.isDown) {
+        } else if (this.cursors.right.isDown) {
             icon.x += this.player.speed;
             moved = true;
         }
 
-        if (this.qKey.isDown) {
+        if (this.keyQ.isDown) {
             icon.angle -= this.player.speed;
             moved = true;
-        } else if (this.eKey.isDown) {
+        } else if (this.keyE.isDown) {
             icon.angle += this.player.speed;
             moved = true;
         }
 
         if (moved) {
-            client.sendMovement(this.player);
+             this.client.sendMovement(this.player);
         }
     }
 
@@ -94,11 +82,11 @@ class Game {
             y: data.y,
             angle: data.angle,
             speed: 3,
-            icon: phaser.add.sprite(data.x, data.y, 'icon')
+            icon: this.add.sprite(data.x, data.y, 'icon')
         };
 
         this.player.icon.angle = data.angle;
-        this.player.icon.anchor.setTo(0.5, 0.5);
+        this.player.icon.setOrigin(0.5);
 
         this.players[data.id] = this.player;
     }
@@ -112,7 +100,7 @@ class Game {
             y: data.y,
             angle: data.angle,
             speed: 3,
-            icon: phaser.add.sprite(data.x, data.y, 'icon')
+            icon: this.add.sprite(data.x, data.y, 'icon')
         };
 
         this.players[data.id] = newPlayer;

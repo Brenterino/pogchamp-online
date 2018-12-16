@@ -5,8 +5,7 @@ var io = require('socket.io').listen(http);
 
 var Session = require('./js/server/session.js');
 
-app.use('/js/common',express.static(__dirname + '/js/common'));
-app.use('/js/client',express.static(__dirname + '/js/client'));
+app.use('/build',express.static(__dirname + '/build'));
 app.use('/assets',express.static(__dirname + '/assets'));
 
 app.get('/', function(req, res) {

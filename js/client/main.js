@@ -1,9 +1,19 @@
-const WINDOW_WIDTH = 1280;
-const WINDOW_HEIGHT = 720;
+import Phaser from 'phaser';
+import Game from "./game.js";
 
-const element = document.getElementById('game');
-const phaser = new Phaser.Game(WINDOW_WIDTH, WINDOW_HEIGHT, Phaser.CANVAS, element);
+var config = {
+    type: Phaser.CANVAS,
+    width: 1280,
+    height: 720,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: true
+        }
+    },
+    scene: [
+        Game
+    ]
+};
 
-const game = new Game();
-
-const client = new Client(game);
+var phaser = new Phaser.Game(config);

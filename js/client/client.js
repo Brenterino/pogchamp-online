@@ -1,23 +1,25 @@
-class Client {
+export default class Client {
 
-    constructor(game) {
-        this.game = game;
+    constructor() {
         this.socket = io.connect();
+    }
+
+    init(game) {
+        this.game = game;
+        console.log("Client init");
 
         this.socket.on('enterResponse', data => {
             console.log("Received enterResponse data");
             console.log(data);
-            this.game.addSelf(data);
+            game.addSelf(data);
         });
 
         this.socket.on('movement', data => {
             console.log("Received movement data");
             console.log(data);
-            this.game.handleMovement(data);
+            game.handleMovement(data);
         });
-    }
 
-    sendJoin() {
         console.log("Emitting enter");
         this.socket.emit('enter');
     }

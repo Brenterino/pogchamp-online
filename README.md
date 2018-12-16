@@ -21,6 +21,12 @@ Now start the server
 $ node index.js
 ```
 
+Run webpack
+
+```sh
+$ npm run start
+```
+
 View in browser at `http://localhost:8081/`
 
 ## Screenshots
