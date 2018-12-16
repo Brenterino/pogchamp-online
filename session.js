@@ -18,6 +18,13 @@ module.exports = class Session {
 		this._socket.on('move', processPlayerMoveHandle);
 		this._socket.on('chat', processChatMessageHandle);
 		this._socket.on('disconnect', sessionClosedHandle);
+
+		let response = {
+			id: 1,
+			name: "yolo"
+		};
+
+		this._socket.emit('enterResp', response);
 	}
 
 	sessionClosed() {
@@ -27,14 +34,14 @@ module.exports = class Session {
 
 	processPlayerEntry(message) {
 		// console.log('New player: ' + message.name)
-		this._player = new Player(message.name);
-
-		let response = {
-			id: 1,
-			name: message.name
-		};
-
-		this._socket.emit('enterResp', response);
+		// this._player = new Player(message.name);
+		//
+		// let response = {
+		// 	id: 1,
+		// 	name: message.name
+		// };
+		//
+		// this._socket.emit('enterResp', response);
 		// console.log(this._player.name.concat(' has joined!'));
 	}
 
