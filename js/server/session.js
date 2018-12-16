@@ -1,8 +1,32 @@
 const Player = require('./player.js');
 
+var current = 1; // temporary auto-incrementing ID
+
+var currentPlayers = new Map(); // temporarily store players here
+
+function createPlayerList() {
+	return Array.from(currentPlayers.values())
+				.map(player => player.asPayload());
+}
+
+function findFreeNameIdentifierForName(name) {
+	let result = 1;
+
+	const currentIdentifiers =
+					createPlayerList()
+					.filter((player) => player.name === name)
+					.map((player) => player.nameIdentifier);
+
+	// hopefully there isn't too many currentIdentifiers!
+	while (currentIdentifiers.includes(result)) result++;
+
+	return result;
+}
+
 module.exports = class Session {
 
 	constructor(socket) {
+		this._player = null;
 		this._socket = socket;
 	}
 
@@ -27,26 +51,32 @@ module.exports = class Session {
 
 	onEnter() {
 		this._socket.on('enter', (data) => {
-			this._player = new Player(1, "yolo");
+			this._player = new Player(current++, "yolo");
 
-			const response = {
-				id: this._player.id,
-				name: this._player.name,
-				x: this._player.x,
-				y: this._player.y,
-				angle: this._player.angle
-			};
+			this._player.nameIdentifier =
+				findFreeNameIdentifierForName(this._player.name);
 
-			console.log(response);
+			const playerData = this._player.asPayload();
 
-			this._socket.emit('enterResponse', response);
-			this._socket.broadcast.emit('playerJoin', response); // change response later
+			// not sure how costly this is, may have to choose a better way
+			// move this to somewhere else
+			const playerList = createPlayerList();
+
+			currentPlayers.set(this._player.id, this._player);
+
+			console.log(playerData);
+			console.log(playerList);
+
+			this._socket.emit('enterResponse', playerData);
+			this._socket.emit('playerList', playerList);
+			this._socket.broadcast.emit('playerJoin', playerData); // change response later
 		});
 	}
 
 	onMovement() {
 		this._socket.on('movement', (data) => {
 			data.id = this._player.id;
+
 			console.log(data);
 			this._socket.broadcast.emit('movement', data);
 		});
@@ -65,6 +95,15 @@ module.exports = class Session {
 	onDisconnect() {
 		this._socket.on('disconnect', (data) => {
 			console.log("Socket disconnected");
+
+			if (this._player != null) {
+				const removePlayer = {
+					id: this._player.id
+				}
+				// can we still broadcast on a disconnectred socket?
+				this._socket.broadcast.emit('playerLeave', removePlayer);
+				currentPlayers.delete(this._player.id);
+			}
 		});
 	}
 }
