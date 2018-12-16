@@ -10,7 +10,7 @@ module.exports = class Session {
 		console.log('Session was opened.');
 
 		this.onEnter(this._socket);
-		this.onMove(this._socket);
+		this.onMovement(this._socket);
 		this.onChat(this._socket);
 		this.onDisconnect(this._socket);
 	}
@@ -39,7 +39,7 @@ module.exports = class Session {
 		});
 	}
 
-	onMove(socket) {
+	onMovement(socket) {
 		socket.on('movement', function(data) {
 			// can verify movement makes sense later if necessary
 			this._player.move(data);
