@@ -25,4 +25,4 @@ View in browser at `http://localhost:8081/`
 
 ## Screenshots
 
-![alt tag](https://imgur.com/a/WpIqm2a)
+![alt tag](https://i.imgur.com/go59NIJ.png)
