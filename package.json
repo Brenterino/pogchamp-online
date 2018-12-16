@@ -1,0 +1,26 @@
+{
+  "name": "pogchamp-online",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brenterino/pogchamp-online.git"
+  },
+  "keywords": [
+    "PogChamp"
+  ],
+  "author": "Alan Morel & Brenterino",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Brenterino/pogchamp-online/issues"
+  },
+  "homepage": "https://github.com/Brenterino/pogchamp-online#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  }
+}
