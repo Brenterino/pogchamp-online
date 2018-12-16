@@ -11,7 +11,9 @@ class Game {
 
     preload() {
         // load sprites
-        console.log("loading sprites");
+        phaser.load.image('background', 'assets/background.png');
+
+        console.log("Game preloaded");
     }
 
     create() {
@@ -20,6 +22,8 @@ class Game {
         this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
         this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
         this.enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+
+        this.background = game.add.tileSprite(0, 0, 1280, 720, 'background');
 
         console.log("Game created");
 
