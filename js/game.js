@@ -99,7 +99,7 @@ class Game {
             speed: 3,
             icon: phaser.add.sprite(data.x, data.y, 'icon')
         };
-        
+
         this.player.icon.angle = data.angle;
         this.player.icon.anchor.setTo(0.5, 0.5);
 
@@ -126,7 +126,16 @@ class Game {
 
         if (!toMove) {
             console.log("Tried to move non-existent player with id: " + toMove.id);
+            return;
         }
+
+        if (toMove.id === this.player.id) {
+            console.log("Tried to move self.");
+            return;
+        }
+
+        console.log(data);
+
         toMove.icon.x = data.x;
         toMove.icon.y = data.y;
     }
