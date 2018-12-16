@@ -47,9 +47,8 @@ module.exports = class Session {
 	onMovement(socket) {
 		socket.on('movement', (data) => {
 			data.id = this._player.id;
- 			console.log(data);
-
-			socket.broadcast.emit('move', data);
+			console.log(data);
+			socket.broadcast.emit('movement', data);
 		});
 	}
 

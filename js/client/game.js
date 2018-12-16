@@ -1,4 +1,3 @@
-import Phaser from 'phaser';
 import Client from "./client.js";
 
 export default class Game extends Phaser.Scene {
@@ -14,7 +13,7 @@ export default class Game extends Phaser.Scene {
 
         this.load.image('background', 'assets/background.png');
         this.load.image('icon', 'assets/player/icon.png');
-        
+
         console.log("Game preloaded");
     }
 
@@ -24,7 +23,6 @@ export default class Game extends Phaser.Scene {
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
         this.add.image(0, 0, 'background').setOrigin(0, 0);
-        this.add.image(0, 0, 'icon').setOrigin(0, 0);
 
         this.client.init(this);
 
@@ -125,10 +123,6 @@ export default class Game extends Phaser.Scene {
         toMove.icon.y = data.y;
     }
 
-    sentMessage(id, data) {
-        // handle incoming message
-    }
-
     removePlayer(data) {
         const toRemove = this.players[data.id];
 
@@ -136,7 +130,5 @@ export default class Game extends Phaser.Scene {
             console.log("Tried to remove non-existent player with id: " + toRemove.id);
             return;
         }
-
-        // remove player from game
     }
 }
