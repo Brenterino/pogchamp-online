@@ -43,7 +43,6 @@ export default class Client {
     }
 
     sendMovement(player) {
-        console.log("Emitting movement");
         this.socket.emit('movement', {
             x: player.icon.x,
             y: player.icon.y,

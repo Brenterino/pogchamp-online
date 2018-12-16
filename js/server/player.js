@@ -4,8 +4,8 @@ module.exports = class Player {
 		this._id = id;
 		this._name = name;
 		this._nameIdentifier = 0;
-		this._x = 0;
-		this._y = 0;
+		this._x = 100;
+		this._y = 100;
 		this._angle = 0;
 		this._mirrored = false;
 	}

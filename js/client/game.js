@@ -91,6 +91,7 @@ export default class Game extends Phaser.Scene {
 
         if (moved) {
              this.client.sendMovement(this.player);
+             this.syncNameTag();
         }
     }
 
@@ -102,14 +103,32 @@ export default class Game extends Phaser.Scene {
             x: data.x,
             y: data.y,
             angle: data.angle,
-            speed: 3,
-            icon: this.add.sprite(data.x, data.y, 'icon')
+            speed: 3
         };
 
-        this.player.icon.angle = data.angle;
+        this.player.rectangle = this.add.graphics();
+        this.player.rectangle.fillStyle(0x000000, 1);
+        this.player.rectangle.fillRoundedRect(0, 0, 100, 25, 4);
+        this.player.rectangle.alpha = 0.3;
+
+        this.player.text = this.add.text(data.x, data.y, data.name, { font: '20px Arial' });
+        this.player.text.setOrigin(0.5);
+
+        this.player.icon = this.add.sprite(data.x, data.y, 'icon');
         this.player.icon.setOrigin(0.5);
+        this.player.icon.angle = data.angle;
+
+        this.syncNameTag();
 
         this.players[data.id] = this.player;
+    }
+
+    syncNameTag() {
+        this.player.rectangle.x = this.player.icon.x - 50;
+        this.player.rectangle.y = this.player.icon.y + this.player.icon.height / 2 + 4;
+
+        this.player.text.x = this.player.icon.x;
+        this.player.text.y = this.player.icon.y + this.player.icon.height / 2 + 16;
     }
 
     addPlayer(data) {
