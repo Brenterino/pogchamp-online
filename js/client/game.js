@@ -130,5 +130,7 @@ export default class Game extends Phaser.Scene {
             console.log("Tried to remove non-existent player with id: " + toRemove.id);
             return;
         }
+
+        console.log(data);
     }
 }

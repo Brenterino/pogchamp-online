@@ -10,20 +10,36 @@ export default class Client {
         this.game = game;
         console.log("Client init");
 
+        this.attachListeners();
+        this.sendEnter();
+    }
+
+    attachListeners() {
+		this.onEnterResponse();
+		this.onMovement();
+	}
+
+    onEnterResponse() {
         this.socket.on('enterResponse', data => {
             console.log("Received enterResponse data");
             console.log(data);
-            game.addSelf(data);
+            this.game.addSelf(data);
         });
+    }
 
+    onMovement() {
         this.socket.on('movement', data => {
             console.log("Received movement data");
             console.log(data);
-            game.handleMovement(data);
+            this.game.handleMovement(data);
         });
+    }
 
+    sendEnter() {
         console.log("Emitting enter");
-        this.socket.emit('enter');
+        this.socket.emit('enter', {
+
+        });
     }
 
     sendMovement(player) {

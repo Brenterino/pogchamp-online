@@ -10,7 +10,7 @@ module.exports = class Session {
 		const address = this._socket.handshake.address;
 		console.log('New session opened from ' + address);
 
-		this.attachListeners(this._socket);
+		this.attachListeners();
 	}
 
 	close() {
@@ -18,15 +18,15 @@ module.exports = class Session {
 		// do other stuff
 	}
 
-	attachListeners(socket) {
-		this.onEnter(socket);
-		this.onMovement(socket);
-		this.onChat(socket);
-		this.onDisconnect(socket);
+	attachListeners() {
+		this.onEnter();
+		this.onMovement();
+		this.onChat();
+		this.onDisconnect();
 	}
 
-	onEnter(socket) {
-		socket.on('enter', (data) => {
+	onEnter() {
+		this._socket.on('enter', (data) => {
 			this._player = new Player(1, "yolo");
 
 			const response = {
@@ -39,31 +39,31 @@ module.exports = class Session {
 
 			console.log(response);
 
-			socket.emit('enterResponse', response);
-			socket.broadcast.emit('playerJoin', response); // change response later
+			this._socket.emit('enterResponse', response);
+			this._socket.broadcast.emit('playerJoin', response); // change response later
 		});
 	}
 
-	onMovement(socket) {
-		socket.on('movement', (data) => {
+	onMovement() {
+		this._socket.on('movement', (data) => {
 			data.id = this._player.id;
 			console.log(data);
-			socket.broadcast.emit('movement', data);
+			this._socket.broadcast.emit('movement', data);
 		});
 	}
 
-	onChat(socket) {
-		socket.on('chat', (data) => {
+	onChat() {
+		this._socket.on('chat', (data) => {
 			// can filter the chat message later to keep it sfl (maybe)
 			data.id = this._player.id;
 
  			console.log(data);
-			socket.broadcast.emit('chat', data);
+			this._socket.broadcast.emit('chat', data);
 		});
 	}
 
-	onDisconnect(socket) {
-		socket.on('disconnect', (data) => {
+	onDisconnect() {
+		this._socket.on('disconnect', (data) => {
 			console.log("Socket disconnected");
 		});
 	}
