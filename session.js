@@ -10,9 +10,9 @@ module.exports = class Session {
 		console.log('Session was opened.');
 
 		let processPlayerEntryHandle = (function(msg) { this.processPlayerEntry(msg); }).bind(this);
-		let processPlayerMoveHandle  = (function(msg) { this.processPlayerMove(msg);  }).bind(this);
+		let processPlayerMoveHandle  = (function(msg) { this.processPlayerMove (msg); }).bind(this);
 		let processChatMessageHandle = (function(msg) { this.processChatMessage(msg); }).bind(this);
-		let sessionClosedHandle      = (function(msg) { this.sessionClosed(msg);      }).bind(this);
+		let sessionClosedHandle      = (function(msg) { this.sessionClosed     (msg); }).bind(this);
 
 		this._socket.on('enter', processPlayerEntryHandle);
 		this._socket.on('move', processPlayerMoveHandle);
@@ -26,8 +26,15 @@ module.exports = class Session {
 	}
 
 	processPlayerEntry(message) {
-		console.log('New player: ' + message.name)
+		// console.log('New player: ' + message.name)
 		this._player = new Player(message.name);
+
+		let response = {
+			id: 1,
+			name: message.name
+		};
+
+		this._socket.emit('enterResp', response);
 		// console.log(this._player.name.concat(' has joined!'));
 	}
 
