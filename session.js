@@ -41,25 +41,21 @@ module.exports = class Session {
 
 	onMovement(socket) {
 		socket.on('movement', function(data) {
-			let playerMove = {
-				sender: this._player.id,
-				data: data
-			}
-			console.log(playerMove);
+			data.id = this._player.id;
+
+			console.log(data);
 			// can verify movement makes sense later if necessary
-			socket.broadcast.emit('move', playerMove);
+			socket.broadcast.emit('move', data);
 		});
 	}
 
 	onChat(socket) {
 		socket.on('chat', function(data) {
-			let playerChat = {
-				sender: this._player.id,
-				data: data
-			}
-			console.log(playerChat);
-			// can filter data later if necessary
-			socket.broadcast.emit('chat', playerChat);
+			// can filter the chat message later to keep it sfl (maybe)
+			data.id = this._player.id;
+
+			console.log(data);
+			socket.broadcast.emit('chat', data);
 		});
 	}
 
