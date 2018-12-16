@@ -23,7 +23,7 @@ class Game {
         this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
         this.enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
-        this.background = game.add.tileSprite(0, 0, 1280, 720, 'background');
+        game.add.tileSprite(0, 0, 1280, 720, 'background');
 
         console.log("Game created");
 
@@ -50,19 +50,19 @@ class Game {
         // handle rotation
     }
 
-    addPlayer(id, x, y) {
-        // add player
+    addPlayer(id, username) {
+        console.log("Adding player, id: " + id + " and username: " + username);
     }
 
     movePlayer(id, x, y) {
         // move player
     }
 
-    sendMessage(message) {
+    sendMessage(data) {
         // method to send message to server
     }
 
-    sentMessage(id, message) {
+    sentMessage(id, data) {
         // handle incoming message
     }
 
