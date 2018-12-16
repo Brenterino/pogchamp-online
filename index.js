@@ -14,7 +14,7 @@ app.get('/', function(req, res) {
 });
 
 io.on('connection', function(socket) {
-    let session = new Session(socket);
+    const session = new Session(socket);
 
     session.open();
 });

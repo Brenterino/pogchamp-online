@@ -2,7 +2,10 @@ class Game {
 
     constructor() {
         this.player = null;
-        this.players = {};
+        this.players = [];
+
+        phaser.state.add('Game', this);
+        phaser.state.start('Game');
     }
 
     init() {
@@ -17,13 +20,13 @@ class Game {
     }
 
     create() {
-        this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
-        this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-        this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-        this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-        this.qKey = game.input.keyboard.addKey(Phaser.Keyboard.Q);
-        this.eKey = game.input.keyboard.addKey(Phaser.Keyboard.E);
-        this.enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.upKey = phaser.input.keyboard.addKey(Phaser.Keyboard.UP);
+        this.downKey = phaser.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+        this.leftKey = phaser.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+        this.rightKey = phaser.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+        this.qKey = phaser.input.keyboard.addKey(Phaser.Keyboard.Q);
+        this.eKey = phaser.input.keyboard.addKey(Phaser.Keyboard.E);
+        this.enterKey = phaser.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
         phaser.add.tileSprite(0, 0, 1280, 720, 'background');
 
@@ -50,8 +53,8 @@ class Game {
     }
 
     handleMovement() {
-        var moved = false;
-        var icon = this.player.icon;
+        const icon = this.player.icon;
+        let moved = false;
 
         if (this.upKey.isDown) {
             icon.y -= this.player.speed;
@@ -102,7 +105,7 @@ class Game {
 
     addPlayer(data) {
 
-        var newPlayer = {
+        const newPlayer = {
             id: data.id,
             name: data.name,
             x: data.x,
@@ -116,7 +119,7 @@ class Game {
     }
 
     movePlayer(data) {
-        var toMove = this.players[data.id];
+        const toMove = this.players[data.id];
 
         if (!toMove) {
             console.log("Tried to move non-existent player with id: " + toMove.id);
@@ -138,7 +141,14 @@ class Game {
         // handle incoming message
     }
 
-    removePlayer(id) {
+    removePlayer(data) {
+        const toRemove = this.players[data.id];
+
+        if (!toRemove) {
+            console.log("Tried to remove non-existent player with id: " + toRemove.id);
+            return;
+        }
+
         // remove player from game
     }
 }

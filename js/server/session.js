@@ -7,8 +7,8 @@ module.exports = class Session {
 	}
 
 	open() {
-		let address = this._socket.handshake.address;
-	    console.log('New session opened from ' + address);
+		const address = this._socket.handshake.address;
+		console.log('New session opened from ' + address);
 
 		this.attachListeners(this._socket);
 	}
@@ -26,10 +26,10 @@ module.exports = class Session {
 	}
 
 	onEnter(socket) {
-		socket.on('enter', function(data) {
+		socket.on('enter', (data) => {
 			this._player = new Player(1, "yolo");
 
-			let response = {
+			const response = {
 				id: this._player.id,
 				name: this._player.name,
 				x: this._player.x,
@@ -45,7 +45,7 @@ module.exports = class Session {
 	}
 
 	onMovement(socket) {
-		socket.on('movement', function(data) {
+		socket.on('movement', (data) => {
 			data.id = this._player.id;
  			console.log(data);
 
@@ -54,7 +54,7 @@ module.exports = class Session {
 	}
 
 	onChat(socket) {
-		socket.on('chat', function(data) {
+		socket.on('chat', (data) => {
 			// can filter the chat message later to keep it sfl (maybe)
 			data.id = this._player.id;
 
@@ -64,7 +64,7 @@ module.exports = class Session {
 	}
 
 	onDisconnect(socket) {
-		socket.on('disconnect', function(data) {
+		socket.on('disconnect', (data) => {
 			console.log("Socket disconnected");
 		});
 	}
