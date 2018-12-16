@@ -9,20 +9,6 @@ function createPlayerList() {
 				.map(player => player.asPayload());
 }
 
-function findFreeNameIdentifierForName(name) {
-	let result = 1;
-
-	const currentIdentifiers =
-					createPlayerList()
-					.filter((player) => player.name === name)
-					.map((player) => player.nameIdentifier);
-
-	// hopefully there isn't too many currentIdentifiers!
-	while (currentIdentifiers.includes(result)) result++;
-
-	return result;
-}
-
 module.exports = class Session {
 
 	constructor(socket) {
@@ -52,9 +38,6 @@ module.exports = class Session {
 	onEnter() {
 		this._socket.on('enter', (data) => {
 			this._player = new Player(current++, "yolo");
-
-			this._player.nameIdentifier =
-				findFreeNameIdentifierForName(this._player.name);
 
 			const playerData = this._player.asPayload();
 
