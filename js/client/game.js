@@ -19,8 +19,14 @@ export default class Game extends Phaser.Scene {
 
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+
+        this.input.on('pointerdown', this.click, this);
 
         this.add.image(0, 0, 'background').setOrigin(0, 0);
 
@@ -38,22 +44,26 @@ export default class Game extends Phaser.Scene {
        this.handleMovement();
     }
 
+    click() {
+        console.log("Click detected");
+    }
+
     handleMovement() {
         const icon = this.player.icon;
         let moved = false;
 
-        if (this.cursors.up.isDown) {
+        if (this.cursors.up.isDown || this.keyW.isDown) {
             icon.y -= this.player.speed;
             moved = true;
-        } else if (this.cursors.down.isDown) {
+        } else if (this.cursors.down.isDown || this.keyS.isDown) {
             icon.y += this.player.speed;
             moved = true;
         }
 
-        if (this.cursors.left.isDown) {
+        if (this.cursors.left.isDown || this.keyA.isDown) {
             icon.x -= this.player.speed;
             moved = true;
-        } else if (this.cursors.right.isDown) {
+        } else if (this.cursors.right.isDown || this.keyD.isDown) {
             icon.x += this.player.speed;
             moved = true;
         }
