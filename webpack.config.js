@@ -2,12 +2,16 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    app: './js/client/main.js'
+    app: [
+        path.resolve(__dirname, 'js/client/main.js')
+    ],
+    vendor: ['phaser']
   },
 
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'app.bundle.js'
+      filename: '[name].js',
+      path: __dirname + '/build',
+      chunkFilename: '[id].[chunkhash].js'
   },
 
   module: {
