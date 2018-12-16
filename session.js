@@ -6,7 +6,7 @@ module.exports = class Session {
 		this._socket = socket;
 	}
 
-	sessionOpened() {
+	open() {
 		console.log('Session was opened.');
 
 		this.onEnter(this._socket);
@@ -15,7 +15,7 @@ module.exports = class Session {
 		this.onDisconnect(this._socket);
 	}
 
-	sessionClosed() {
+	close() {
 		console.log('Session was closed.');
 		// do other stuff
 	}
@@ -41,21 +41,25 @@ module.exports = class Session {
 
 	onMovement(socket) {
 		socket.on('movement', function(data) {
-			data.id = this._player.id;
-
-			console.log(data);
+			let playerMove = {
+				sender: this._player.id,
+				data: data
+			}
+			console.log(playerMove);
 			// can verify movement makes sense later if necessary
-			socket.broadcast.emit('move', data);
+			socket.broadcast.emit('move', playerMove);
 		});
 	}
 
 	onChat(socket) {
 		socket.on('chat', function(data) {
-			// can filter the chat message later to keep it sfl (maybe)
-			data.id = this._player.id;
-
-			console.log(data);
-			socket.broadcast.emit('chat', data);
+			let playerChat = {
+				sender: this._player.id,
+				data: data
+			}
+			console.log(playerChat);
+			// can filter data later if necessary
+			socket.broadcast.emit('chat', playerChat);
 		});
 	}
 

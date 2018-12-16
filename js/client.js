@@ -15,7 +15,7 @@ class Client {
         });
     }
 
-    join() {
+    sendJoin() {
         console.log("sending enter message!");
         this.socket.emit('enter');
     }

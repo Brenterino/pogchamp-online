@@ -28,7 +28,7 @@ class Game {
 
         phaser.add.tileSprite(0, 0, 1280, 720, 'background');
 
-        client.join();
+        client.sendJoin();
         console.log("Game created");
     }
 

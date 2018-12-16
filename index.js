@@ -15,7 +15,7 @@ app.get('/', function(req, res) {
 io.on('connection', function(socket) {
     let session = new Session(socket);
 
-    session.sessionOpened();
+    session.open();
 });
 
 app.set('port', (process.env.PORT || 8081));
