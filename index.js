@@ -1,9 +1,9 @@
-var express = require('express');
-var app = express();
-var http = require('http').createServer(app);
-var io = require('socket.io').listen(http);
+const express = require('express');
+const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io').listen(http);
 
-var Session = require('./js/server/session.js');
+const Session = require('./js/server/session.js');
 
 app.use('/build',express.static(__dirname + '/build'));
 app.use('/assets',express.static(__dirname + '/assets'));

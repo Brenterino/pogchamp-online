@@ -77,6 +77,18 @@ export default class Game extends Phaser.Scene {
             moved = true;
         }
 
+        if (icon.x - icon.width / 2 < 0) {
+            icon.x = icon.width / 2;
+        } else if (icon.x - icon.width / 2 > this.sys.canvas.width - icon.width) {
+            icon.x = this.sys.canvas.width - icon.width / 2;
+        }
+
+        if (icon.y - icon.height / 2 < 0) {
+            icon.y = icon.height / 2;
+        } else if (icon.y - icon.height / 2 > this.sys.canvas.height - icon.height) {
+            icon.y = this.sys.canvas.height - icon.height / 2;
+        }
+
         if (moved) {
              this.client.sendMovement(this.player);
         }
