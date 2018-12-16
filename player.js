@@ -15,4 +15,8 @@ module.exports = class Player {
 	get y() {
 		return this._y;
 	}
+
+	get angle() {
+		return this._angle;
+	}
 }
