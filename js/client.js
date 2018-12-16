@@ -5,7 +5,13 @@ class Client {
         this.socket = io.connect();
 
         this.socket.on('enterResponse', data => {
-            this.game.addPlayer(data);
+            this.game.addSelf(data);
+        });
+
+        this.socket.on('movement', data => {
+            console.log("New movement data");
+            console.log(data);
+            this.game.handleMovement(data);
         });
     }
 
@@ -16,10 +22,9 @@ class Client {
 
     sendMovement(player) {
         this.socket.emit('movement', {
-            id: player.id,
-            x: player.x,
-            y: player.y,
-            angle: player.angle
+            x: player.icon.x,
+            y: player.icon.y,
+            angle: player.icon.angle
         });
     }
 }

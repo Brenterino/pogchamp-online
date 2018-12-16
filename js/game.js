@@ -22,6 +22,8 @@ class Game {
         this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
         this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
         this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+        this.qKey = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+        this.eKey = game.input.keyboard.addKey(Phaser.Keyboard.E);
         this.enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
         phaser.add.tileSprite(0, 0, 1280, 720, 'background');
@@ -67,6 +69,14 @@ class Game {
             moved = true;
         }
 
+        if (this.qKey.isDown) {
+            icon.angle -= this.player.speed;
+            moved = true;
+        } else if (this.eKey.isDown) {
+            icon.angle += this.player.speed;
+            moved = true;
+        }
+
         if (moved) {
             client.sendMovement(this.player);
         }
@@ -76,8 +86,8 @@ class Game {
         // handle rotation
     }
 
-    addPlayer(data) {
-        console.log("Adding player");
+    addSelf(data) {
+        console.log("Adding self");
         console.log(data);
 
         this.player = {
@@ -89,12 +99,36 @@ class Game {
             speed: 3,
             icon: phaser.add.sprite(data.x, data.y, 'icon')
         };
+        
+        this.player.icon.angle = data.angle;
+        this.player.icon.anchor.setTo(0.5, 0.5);
 
         this.players[data.id] = this.player;
     }
 
-    movePlayer(id, x, y) {
-        // move player
+    addPlayer(data) {
+
+        var newPlayer = {
+            id: data.id,
+            name: data.name,
+            x: data.x,
+            y: data.y,
+            angle: data.angle,
+            speed: 3,
+            icon: phaser.add.sprite(data.x, data.y, 'icon')
+        };
+
+        this.players[data.id] = newPlayer;
+    }
+
+    movePlayer(data) {
+        var toMove = this.players[data.id];
+
+        if (!toMove) {
+            console.log("Tried to move non-existent player with id: " + toMove.id);
+        }
+        toMove.icon.x = data.x;
+        toMove.icon.y = data.y;
     }
 
     sendMessage(data) {

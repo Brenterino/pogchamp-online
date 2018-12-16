@@ -41,13 +41,13 @@ module.exports = class Session {
 
 	onMovement(socket) {
 		socket.on('movement', function(data) {
+			let playerMove = {
+				sender: this._player.id,
+				data: data
+			}
+			console.log(playerMove);
 			// can verify movement makes sense later if necessary
-			this._player.move(data);
-
-			data.id = this._player.id; // attach sender
-
-			console.log(data);
-			socket.broadcast.emit('movement', data);
+			socket.broadcast.emit('move', playerMove);
 		});
 	}
 
