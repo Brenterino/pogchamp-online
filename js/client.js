@@ -5,7 +5,7 @@ class Client {
         this.socket = io.connect();
 
         this.socket.on('enterResponse', data => {
-            this.game.addPlayer(data.id, data.username);
+            this.game.addPlayer(data.id, data.name);
         });
 
         this.join();

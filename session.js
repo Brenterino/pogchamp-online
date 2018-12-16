@@ -9,10 +9,10 @@ module.exports = class Session {
 	sessionOpened() {
 		console.log('Session was opened.');
 
-		this._socket.on('enter', this.processPlayerEntry);
-		this._socket.on('move', this.processPlayerMove);
-		this._socket.on('chat', this.processChatMessage);
-		this._socket.on('disconnect', this.sessionClosed);
+		this.onEnter(this._socket);
+		this.onMove(this._socket);
+		this.onChat(this._socket);
+		this.onDisconnect(this._socket);
 	}
 
 	sessionClosed() {
@@ -20,20 +20,37 @@ module.exports = class Session {
 		// do other stuff
 	}
 
-	processPlayerEntry(message) {
-		console.log('New player: ' + message.name)
-		this._player = new Player(message.name);
-		// console.log(this._player.name.concat(' has joined!'));
+	onEnter(socket) {
+		socket.on('enter', function() {
+			let response = {
+				id: 1,
+				name: "yolo"
+			};
+
+			console.log(response);
+
+			socket.emit('enterResponse', response);
+		});
 	}
 
-	processPlayerMove(message) {
-		// can verify movement makes sense later if necessary
-		this.broadcastMessage('move', message);
+	onMove(socket) {
+		socket.on('move', function(message) {
+			// can verify movement makes sense later if necessary
+			this.broadcastMessage('move', message);
+		});
 	}
 
-	processChatMessage(message) {
-		// can filter message later if necessary
-		this.broadcastMessage('chat', message);
+	onChat(socket) {
+		socket.on('chat', function(message) {
+			// can filter message later if necessary
+			this.broadcastMessage('chat', message);
+		});
+	}
+
+	onDisconnect(socket) {
+		socket.on('disconnect', function(message) {
+			// clean up
+		});
 	}
 
 	broadcastMessage(eventType, message) {

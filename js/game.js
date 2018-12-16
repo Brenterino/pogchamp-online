@@ -50,8 +50,8 @@ class Game {
         // handle rotation
     }
 
-    addPlayer(id, username) {
-        console.log("Adding player, id: " + id + " and username: " + username);
+    addPlayer(id, name) {
+        console.log("Adding player, id: " + id + " and name: " + name);
     }
 
     movePlayer(id, x, y) {
