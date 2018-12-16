@@ -31,9 +31,9 @@ module.exports = class User {
     //   console.log('Uninitialzied player tried sending a message!');
     //   return;
     // }
-    if (message.sender === this_.player.name())
+    if (message.sender === this._player.name)
       this._socket.broadcast.emit('chat', message); // not sure if this is right
     else
-      console.log('User '.concat(this._player.name(), ' tried to send a message for someone else!'));
+      console.log('User '.concat(this._player.name, ' tried to send a message for someone else!'));
   }
 }
