@@ -8,6 +8,12 @@ module.exports = class Player {
 		this._angle = 0;
 	}
 
+	move(data) {
+		this._x = data.x;
+		this._y = data.y;
+		this._angle = data.angle;
+	}
+
 	get id() {
 		return this._id;
 	}

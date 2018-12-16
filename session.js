@@ -40,14 +40,14 @@ module.exports = class Session {
 	}
 
 	onMove(socket) {
-		socket.on('move', function(data) {
-			let playerMove = {
-				sender: this._player.id,
-				data: data
-			}
-			console.log(playerMove);
+		socket.on('movement', function(data) {
 			// can verify movement makes sense later if necessary
-			socket.broadcast.emit('move', playerMove);
+			this._player.move(data);
+
+			data.id = this._player.id; // attach sender
+
+			console.log(data);
+			socket.broadcast.emit('movement', data);
 		});
 	}
 
