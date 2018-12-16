@@ -82,10 +82,6 @@ class Game {
         }
     }
 
-    handleRotation() {
-        // handle rotation
-    }
-
     addSelf(data) {
         console.log("Adding self");
         console.log(data);
