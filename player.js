@@ -1,7 +1,15 @@
 module.exports = class Player {
 
-	constructor(name) {
+	constructor(id, name) {
+		this._id = id;
 		this._name = name;
+		this._x = 0;
+		this._y = 0;
+		this._angle = 0;
+	}
+
+	get id() {
+		return this._id;
 	}
 
 	get name() {

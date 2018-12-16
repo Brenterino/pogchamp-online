@@ -21,44 +21,51 @@ module.exports = class Session {
 	}
 
 	onEnter(socket) {
-		socket.on('enter', function() {
+		socket.on('enter', function(data) {
+			this._player = new Player(1, "yolo");
+
 			let response = {
-				id: 1,
-				name: "yolo"
+				id: this._player.id,
+				name: this._player.name,
+				x: this._player.x,
+				y: this._player.y,
+				angle: this._player.angle
 			};
 
 			console.log(response);
 
 			socket.emit('enterResponse', response);
+			socket.broadcast.emit('playerJoin', response); // change response later
 		});
 	}
 
 	onMove(socket) {
-		socket.on('move', function(message) {
+		socket.on('move', function(data) {
+			let playerMove = {
+				sender: this._player.id,
+				data: data
+			}
+			console.log(playerMove);
 			// can verify movement makes sense later if necessary
-			this.broadcastMessage('move', message);
+			socket.broadcast.emit('move', playerMove);
 		});
 	}
 
 	onChat(socket) {
-		socket.on('chat', function(message) {
-			// can filter message later if necessary
-			this.broadcastMessage('chat', message);
+		socket.on('chat', function(data) {
+			let playerChat = {
+				sender: this._player.id,
+				data: data
+			}
+			console.log(playerChat);
+			// can filter data later if necessary
+			socket.broadcast.emit('chat', playerChat);
 		});
 	}
 
 	onDisconnect(socket) {
-		socket.on('disconnect', function(message) {
+		socket.on('disconnect', function(data) {
 			// clean up
 		});
-	}
-
-	broadcastMessage(eventType, message) {
-		if (typeof this._player != "undefined") {
-			if (message.sender === this._player.name)
-				this._socket.broadcast.emit(eventType, message); // not sure if this is right
-			else
-				console.log('User '.concat(this._player.name, ' tried to send a message for someone else!'));
-		}
 	}
 }
