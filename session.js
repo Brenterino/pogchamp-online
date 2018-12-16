@@ -26,7 +26,7 @@ module.exports = class Session {
 	}
 
 	processPlayerEntry(message) {
-		console.log(this.constructor.name);
+		console.log('New player: ' + message.name)
 		this._player = new Player(message.name);
 		// console.log(this._player.name.concat(' has joined!'));
 	}
