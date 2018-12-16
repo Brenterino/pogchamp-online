@@ -46,6 +46,7 @@ export default class Game extends Phaser.Scene {
 
     click() {
         console.log("Click detected");
+        this.player.icon.scaleX *= -1;
     }
 
     handleMovement() {
