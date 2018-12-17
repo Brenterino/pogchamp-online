@@ -1,14 +1,10 @@
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 export default class Client {
 
-    constructor() {
-        this.socket = io.connect();
-    }
-
     init(game) {
         this.game = game;
-        console.log("Client init");
+        this.socket = io.connect();
 
         this.attachListeners();
         this.sendEnter();
@@ -23,7 +19,7 @@ export default class Client {
 	}
 
     onEnterResponse() {
-        this.socket.on('enterResponse', data => {
+        this.socket.on("enterResponse", data => {
             console.log("Received enterResponse data");
             console.log(data);
 
@@ -33,13 +29,13 @@ export default class Client {
     }
 
     onMovement() {
-        this.socket.on('movement', data => {
+        this.socket.on("movement", data => {
             this.game.movePlayer(data);
         });
     }
 
     onPlayerList() {
-        this.socket.on('playerList', data => {
+        this.socket.on("playerList", data => {
             console.log("Received playerList data");
             console.log(data);
 
@@ -48,7 +44,7 @@ export default class Client {
     }
 
     onPlayerJoin() {
-        this.socket.on('playerJoin', data => {
+        this.socket.on("playerJoin", data => {
             console.log("Received playerJoin data");
             console.log(data);
 
@@ -57,7 +53,7 @@ export default class Client {
     }
 
     onPlayerLeave() {
-        this.socket.on('playerLeave', data => {
+        this.socket.on("playerLeave", data => {
             console.log("Received playerLeave data");
             console.log(data);
 
@@ -67,13 +63,11 @@ export default class Client {
 
     sendEnter() {
         console.log("Emitting enter");
-        this.socket.emit('enter', {
-
-        });
+        this.socket.emit("enter");
     }
 
     sendMovement(player) {
-        this.socket.emit('movement', {
+        this.socket.emit("movement", {
             x: player.icon.x,
             y: player.icon.y,
             angle: player.icon.angle,

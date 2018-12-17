@@ -7,8 +7,8 @@ export default class Game extends Phaser.Scene {
         this.players = [];
         this.client = new Client();
 
-        this.load.image('background', 'assets/background.png');
-        this.load.image('icon', 'assets/player/icon.png');
+        this.load.image("background", "assets/background.png");
+        this.load.image("icon", "assets/player/icon.png");
     }
 
     create() {
@@ -20,9 +20,9 @@ export default class Game extends Phaser.Scene {
         this.keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         this.keyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
-        this.input.on('pointerdown', this.click, this);
+        this.input.on("pointerdown", this.click, this);
 
-        this.add.image(0, 0, 'background').setOrigin(0, 0);
+        this.add.image(0, 0, "background").setOrigin(0, 0);
 
         this.client.init(this);
     }
@@ -105,10 +105,10 @@ export default class Game extends Phaser.Scene {
         player.rectangle.fillRoundedRect(0, 0, 100, 25, 4);
         player.rectangle.alpha = 0.3;
 
-        player.text = this.add.text(data.x, data.y, data.name, { font: '20px Arial' });
+        player.text = this.add.text(data.x, data.y, data.name, { font: "20px Arial" });
         player.text.setOrigin(0.5);
 
-        player.icon = this.add.image(data.x, data.y, 'icon');
+        player.icon = this.add.image(data.x, data.y, "icon");
         player.icon.setOrigin(0.5);
         player.icon.angle = data.angle;
         player.icon.scaleX *= data.mirrored ? -1 : 1;
