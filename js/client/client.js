@@ -15,15 +15,18 @@ export default class Client {
     }
 
     attachListeners() {
-		this.onEnterResponse();
-		this.onMovement();
+        this.onEnterResponse();
+        this.onMovement();
+        this.onPlayerList();
 	}
 
     onEnterResponse() {
         this.socket.on('enterResponse', data => {
             console.log("Received enterResponse data");
             console.log(data);
-            this.game.addSelf(data);
+
+            const self = this.game.addPlayer(data);
+            this.game.setSelf(self);
         });
     }
 
@@ -32,6 +35,14 @@ export default class Client {
             console.log("Received movement data");
             console.log(data);
             this.game.handleMovement(data);
+        });
+    }
+
+    onPlayerList() {
+        this.socket.on('playerList', data => {
+            console.log("Received playerList data");
+            console.log(data);
+            this.game.addOtherPlayers(data);
         });
     }
 

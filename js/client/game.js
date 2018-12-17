@@ -94,13 +94,13 @@ export default class Game extends Phaser.Scene {
 
         if (moved) {
              this.client.sendMovement(this.player);
-             this.syncNameTag();
+             this.syncNameTag(this.player);
         }
     }
 
-    addSelf(data) {
+    addPlayer(data) {
 
-        this.player = {
+        const player = {
             id: data.id,
             name: data.name,
             x: data.x,
@@ -109,44 +109,42 @@ export default class Game extends Phaser.Scene {
             speed: 3
         };
 
-        this.player.rectangle = this.add.graphics();
-        this.player.rectangle.fillStyle(0x000000, 1);
-        this.player.rectangle.fillRoundedRect(0, 0, 100, 25, 4);
-        this.player.rectangle.alpha = 0.3;
+        player.rectangle = this.add.graphics();
+        player.rectangle.fillStyle(0x000000, 1);
+        player.rectangle.fillRoundedRect(0, 0, 100, 25, 4);
+        player.rectangle.alpha = 0.3;
 
-        this.player.text = this.add.text(data.x, data.y, data.name, { font: '20px Arial' });
-        this.player.text.setOrigin(0.5);
+        player.text = this.add.text(data.x, data.y, data.name, { font: '20px Arial' });
+        player.text.setOrigin(0.5);
 
-        this.player.icon = this.add.sprite(data.x, data.y, 'icon');
-        this.player.icon.setOrigin(0.5);
-        this.player.icon.angle = data.angle;
+        player.icon = this.add.sprite(data.x, data.y, 'icon');
+        player.icon.setOrigin(0.5);
+        player.icon.angle = data.angle;
 
-        this.syncNameTag();
+        this.syncNameTag(player);
 
-        this.players[data.id] = this.player;
+        this.players[data.id] = player;
+
+        return player;
     }
 
-    syncNameTag() {
-        this.player.rectangle.x = this.player.icon.x - 50;
-        this.player.rectangle.y = this.player.icon.y + this.player.icon.height / 2 + 4;
+    syncNameTag(player) {
+        player.rectangle.x = player.icon.x - 50;
+        player.rectangle.y = player.icon.y + player.icon.height / 2 + 4;
 
-        this.player.text.x = this.player.icon.x;
-        this.player.text.y = this.player.icon.y + this.player.icon.height / 2 + 16;
+        player.text.x = player.icon.x;
+        player.text.y = player.icon.y + player.icon.height / 2 + 16;
     }
 
-    addPlayer(data) {
+    setSelf(player) {
+        this.player = player;
+    }
 
-        const newPlayer = {
-            id: data.id,
-            name: data.name,
-            x: data.x,
-            y: data.y,
-            angle: data.angle,
-            speed: 3,
-            icon: this.add.sprite(data.x, data.y, 'icon')
-        };
-
-        this.players[data.id] = newPlayer;
+    addOtherPlayers(data) {
+        for (var player of data) {
+            this.addPlayer(player);
+        }
+        console.log(this.players);
     }
 
     movePlayer(data) {
