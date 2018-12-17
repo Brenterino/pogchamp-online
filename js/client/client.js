@@ -34,7 +34,6 @@ export default class Client {
 
     onMovement() {
         this.socket.on('movement', data => {
-            console.log("Received movement data");
             this.game.movePlayer(data);
         });
     }
@@ -43,6 +42,7 @@ export default class Client {
         this.socket.on('playerList', data => {
             console.log("Received playerList data");
             console.log(data);
+
             this.game.addOtherPlayers(data);
         });
     }

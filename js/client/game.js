@@ -45,7 +45,6 @@ export default class Game extends Phaser.Scene {
     }
 
     click() {
-        console.log("Click detected");
         this.player.icon.scaleX *= -1;
         this.client.sendMovement(this.player);
     }
@@ -159,8 +158,6 @@ export default class Game extends Phaser.Scene {
             console.log("Tried to move self.");
             return;
         }
-
-        console.log(data);
 
         toMove.icon.x = data.x;
         toMove.icon.y = data.y;
