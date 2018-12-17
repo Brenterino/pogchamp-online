@@ -37,7 +37,8 @@ module.exports = class Session {
 
 	onEnter() {
 		this._socket.on('enter', (data) => {
-			this._player = new Player(current++, "yolo");
+			const id = current++;
+			this._player = new Player(id, "yolo" + id);
 
 			const playerData = this._player.asPayload();
 
@@ -58,6 +59,8 @@ module.exports = class Session {
 
 	onMovement() {
 		this._socket.on('movement', (data) => {
+			this._player.move(data); // store player location
+
 			data.id = this._player.id;
 
 			console.log(data);

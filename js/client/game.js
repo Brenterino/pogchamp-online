@@ -106,7 +106,7 @@ export default class Game extends Phaser.Scene {
             x: data.x,
             y: data.y,
             angle: data.angle,
-            speed: 3
+            speed: data.speed
         };
 
         player.rectangle = this.add.graphics();
