@@ -47,6 +47,7 @@ export default class Game extends Phaser.Scene {
     click() {
         console.log("Click detected");
         this.player.icon.scaleX *= -1;
+        this.client.sendMovement(this.player);
     }
 
     handleMovement() {
@@ -76,6 +77,8 @@ export default class Game extends Phaser.Scene {
             icon.angle += this.player.speed;
             moved = true;
         }
+
+        icon.angle = Math.floor(icon.angle);
 
         if (icon.x - icon.width / 2 < 0) {
             icon.x = icon.width / 2;

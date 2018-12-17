@@ -46,7 +46,8 @@ export default class Client {
         this.socket.emit('movement', {
             x: player.icon.x,
             y: player.icon.y,
-            angle: player.icon.angle
+            angle: player.icon.angle,
+            mirrored: player.icon.scaleX < 0
         });
     }
 }
