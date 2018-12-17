@@ -2,14 +2,17 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io').listen(http);
+const path = require('path');
 
-const Session = require('./js/server/session.js');
+const Session = require('./session.js');
 
-app.use('/build',express.static(__dirname + '/build'));
-app.use('/assets',express.static(__dirname + '/assets'));
+const root = path.join(__dirname, '../..');
+
+app.use('/build', express.static(path.join(root, 'build')));
+app.use('/assets', express.static(path.join(root, 'assets')));
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(path.join(root, 'assets/index.html'));
 });
 
 io.on('connection', function(socket) {

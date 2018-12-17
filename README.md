@@ -15,20 +15,20 @@ $ cd pogchamp-online
 $ npm install
 ```
 
-Now start the server
+Start the server
 
 ```sh
-$ node index.js
+$ npm run server
 ```
 
-Run webpack
+Run the client
 
 ```sh
-$ npm run start
+$ npm run client
 ```
 
 View in browser at `http://localhost:8081/`
 
 ## Screenshots
 
-![alt tag](https://i.imgur.com/go59NIJ.png)
+![alt tag](https://i.imgur.com/wmMVehY.png)
