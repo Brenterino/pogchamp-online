@@ -120,6 +120,7 @@ export default class Game extends Phaser.Scene {
         player.icon = this.add.image(data.x, data.y, 'icon');
         player.icon.setOrigin(0.5);
         player.icon.angle = data.angle;
+        player.icon.scaleX *= data.mirrored ? -1 : 1;
 
         this.syncNameTag(player);
 
@@ -144,7 +145,6 @@ export default class Game extends Phaser.Scene {
         for (var player of data) {
             this.addPlayer(player);
         }
-        console.log(this.players);
     }
 
     movePlayer(data) {
