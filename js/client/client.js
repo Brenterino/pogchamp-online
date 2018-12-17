@@ -33,8 +33,7 @@ export default class Client {
     onMovement() {
         this.socket.on('movement', data => {
             console.log("Received movement data");
-            console.log(data);
-            this.game.handleMovement(data);
+            this.game.movePlayer(data);
         });
     }
 

@@ -151,7 +151,7 @@ export default class Game extends Phaser.Scene {
         const toMove = this.players[data.id];
 
         if (!toMove) {
-            console.log("Tried to move non-existent player with id: " + toMove.id);
+            console.log("Tried to move non-existent player with id: " + data.id);
             return;
         }
 
@@ -164,13 +164,17 @@ export default class Game extends Phaser.Scene {
 
         toMove.icon.x = data.x;
         toMove.icon.y = data.y;
+        toMove.icon.angle = data.angle;
+        toMove.icon.scaleX = data.mirrored ? -1 : 1;
+
+        this.syncNameTag(toMove);
     }
 
     removePlayer(data) {
         const toRemove = this.players[data.id];
 
         if (!toRemove) {
-            console.log("Tried to remove non-existent player with id: " + toRemove.id);
+            console.log("Tried to remove non-existent player with id: " + data.id);
             return;
         }
 
