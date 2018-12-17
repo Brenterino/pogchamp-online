@@ -2,10 +2,6 @@ import Client from "./client.js";
 
 export default class Game extends Phaser.Scene {
 
-    constructor() {
-        super('GameScene');
-    }
-
     preload() {
         this.player = null;
         this.players = [];
@@ -13,8 +9,6 @@ export default class Game extends Phaser.Scene {
 
         this.load.image('background', 'assets/background.png');
         this.load.image('icon', 'assets/player/icon.png');
-
-        console.log("Game preloaded");
     }
 
     create() {
@@ -31,8 +25,6 @@ export default class Game extends Phaser.Scene {
         this.add.image(0, 0, 'background').setOrigin(0, 0);
 
         this.client.init(this);
-
-        console.log("Game created");
     }
 
     update() {

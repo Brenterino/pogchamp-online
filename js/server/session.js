@@ -66,7 +66,6 @@ module.exports = class Session {
 
 			data.id = this._player.id;
 
-			console.log(data);
 			this._socket.broadcast.emit('movement', data);
 		});
 	}
