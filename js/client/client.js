@@ -18,6 +18,8 @@ export default class Client {
         this.onEnterResponse();
         this.onMovement();
         this.onPlayerList();
+        this.onPlayerJoin();
+        this.onPlayerLeave();
 	}
 
     onEnterResponse() {
@@ -42,6 +44,24 @@ export default class Client {
             console.log("Received playerList data");
             console.log(data);
             this.game.addOtherPlayers(data);
+        });
+    }
+
+    onPlayerJoin() {
+        this.socket.on('playerJoin', data => {
+            console.log("Received playerJoin data");
+            console.log(data);
+
+            this.game.addPlayer(data);
+        });
+    }
+
+    onPlayerLeave() {
+        this.socket.on('playerLeave', data => {
+            console.log("Received playerLeave data");
+            console.log(data);
+
+            this.game.removePlayer(data);
         });
     }
 

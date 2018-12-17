@@ -117,7 +117,7 @@ export default class Game extends Phaser.Scene {
         player.text = this.add.text(data.x, data.y, data.name, { font: '20px Arial' });
         player.text.setOrigin(0.5);
 
-        player.icon = this.add.sprite(data.x, data.y, 'icon');
+        player.icon = this.add.image(data.x, data.y, 'icon');
         player.icon.setOrigin(0.5);
         player.icon.angle = data.angle;
 
@@ -178,6 +178,10 @@ export default class Game extends Phaser.Scene {
             return;
         }
 
-        console.log(data);
+        toRemove.icon.destroy();
+        toRemove.text.destroy();
+        toRemove.rectangle.destroy();
+
+        this.players.splice(data.id, 1);
     }
 }
