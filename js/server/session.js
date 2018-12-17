@@ -59,6 +59,9 @@ module.exports = class Session {
 
 	onMovement() {
 		this._socket.on('movement', (data) => {
+			if (this._player == null)
+				return;
+
 			this._player.move(data); // store player location
 
 			data.id = this._player.id;
@@ -70,6 +73,9 @@ module.exports = class Session {
 
 	onChat() {
 		this._socket.on('chat', (data) => {
+			if (this._player == null)
+				return;
+
 			// can filter the chat message later to keep it sfl (maybe)
 			data.id = this._player.id;
 
