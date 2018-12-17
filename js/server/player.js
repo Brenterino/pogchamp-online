@@ -6,6 +6,7 @@ module.exports = class Player {
 		this._x = 100;
 		this._y = 100;
 		this._angle = 0;
+		this._speed = 3;
 		this._mirrored = false;
 	}
 
@@ -32,6 +33,7 @@ module.exports = class Player {
 			y: this._y,
 			angle: this._angle,
 			mirrored: this._mirrored,
+			speed: this._speed
 		};
 	}
 }
