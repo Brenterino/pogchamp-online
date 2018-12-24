@@ -24,6 +24,29 @@ export default class Game extends Phaser.Scene {
 
         this.add.image(0, 0, "background").setOrigin(0, 0);
 
+        this.chatActive = false;
+
+        this.chatbox = this.add.graphics();
+        this.chatbox.fillStyle(0x000000, 1);
+        this.chatbox.fillRoundedRect(0, this.sys.canvas.height - 50, this.sys.canvas.width, 50, 4);
+        this.chatbox.alpha = 0.5;
+
+        this.chat = this.add.text(15, this.sys.canvas.height - 45, "", { font: "32px Arial", fill: "#ffffff" });
+
+        this.input.keyboard.on("keydown", event => {
+            if (!this.chatActive) {
+                return;
+            }
+            if (event.keyCode === 8 && this.chat.text.length > 0) {
+                this.chat.text = this.chat.text.substr(0, this.chat.text.length - 1);
+            } else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode < 90)) {
+                this.chat.text += event.key;
+            } else if (event.keyCode === 13 && this.chat.text.length) {
+                this.client.sendMessage(this.chat.text);
+                this.chat.text = "";
+            }
+        });
+
         this.client.init(this);
     }
 
@@ -32,13 +55,22 @@ export default class Game extends Phaser.Scene {
             console.log("Not updating because player is null");
             return;
         }
-
-       this.handleMovement();
+        if (this.chatActive) {
+            this.chatbox.alpha = 1;
+        } else {
+            this.chatbox.alpha = 0.5;
+            this.handleMovement();
+        }
     }
 
-    click() {
-        this.player.icon.scaleX *= -1;
-        this.client.sendMovement(this.player);
+    click(event) {
+        if (event.downY > this.sys.canvas.height - 45) {
+            this.chatActive = true;
+        } else {
+            this.chatActive = false;
+            this.player.icon.scaleX *= -1;
+            this.client.sendMovement(this.player);
+        }
     }
 
     handleMovement() {
@@ -132,12 +164,6 @@ export default class Game extends Phaser.Scene {
         this.player = player;
     }
 
-    addOtherPlayers(data) {
-        for (var player of data) {
-            this.addPlayer(player);
-        }
-    }
-
     movePlayer(data) {
         const toMove = this.players[data.id];
 
@@ -172,5 +198,10 @@ export default class Game extends Phaser.Scene {
         toRemove.rectangle.destroy();
 
         this.players.splice(data.id, 1);
+    }
+
+    displayMessage(data) {
+        const player = this.players[data.id];
+        console.log(player.name + ": " + data.text);
     }
 }

@@ -16,6 +16,7 @@ export default class Client {
         this.onPlayerList();
         this.onPlayerJoin();
         this.onPlayerLeave();
+        this.onChat();
 	}
 
     onEnterResponse() {
@@ -39,7 +40,9 @@ export default class Client {
             console.log("Received playerList data");
             console.log(data);
 
-            this.game.addOtherPlayers(data);
+            for (var player of data) {
+                this.game.addPlayer(player);
+            }
         });
     }
 
@@ -61,8 +64,16 @@ export default class Client {
         });
     }
 
+    onChat() {
+        this.socket.on("chat", data => {
+            console.log("Received chat data");
+            console.log(data);
+
+            this.game.displayMessage(data);
+        });
+    }
+
     sendEnter() {
-        console.log("Emitting enter");
         this.socket.emit("enter");
     }
 
@@ -72,6 +83,13 @@ export default class Client {
             y: player.icon.y,
             angle: player.icon.angle,
             mirrored: player.icon.scaleX < 0
+        });
+    }
+
+    sendMessage(text) {
+        console.log("Emitting message: " + text);
+        this.socket.emit("chat", {
+            text: text
         });
     }
 }
