@@ -27,11 +27,11 @@ export default class Game extends Phaser.Scene {
         this.chatActive = false;
 
         this.chatbox = this.add.graphics();
-        this.chatbox.fillStyle(0x000000, 1);
-        this.chatbox.fillRoundedRect(0, this.sys.canvas.height - 50, this.sys.canvas.width, 50, 4);
-        this.chatbox.alpha = 0.5;
+        this.chatbox.fillStyle(0xffffff, 1);
+        this.chatbox.fillRect(0, this.sys.canvas.height - 50, this.sys.canvas.width, 50);
+        this.chatbox.alpha = 0.25;
 
-        this.chat = this.add.text(15, this.sys.canvas.height - 45, "", { font: "32px Arial", fill: "#ffffff" });
+        this.chat = this.add.text(15, this.sys.canvas.height - 45, "", { font: "32px Arial", fill: "#000000" });
 
         this.input.keyboard.on("keydown", event => {
             if (!this.chatActive) {
@@ -56,15 +56,15 @@ export default class Game extends Phaser.Scene {
             return;
         }
         if (this.chatActive) {
-            this.chatbox.alpha = 1;
+            this.chatbox.alpha = 0.75;
         } else {
-            this.chatbox.alpha = 0.5;
+            this.chatbox.alpha = 0.25;
             this.handleMovement();
         }
     }
 
     click(event) {
-        if (event.downY > this.sys.canvas.height - 45) {
+        if (event.downY > this.sys.canvas.height - 50) {
             this.chatActive = true;
         } else {
             this.chatActive = false;
