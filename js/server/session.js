@@ -79,6 +79,7 @@ module.exports = class Session {
 			data.id = this._player.id;
 
  			console.log(data);
+			this._socket.emit('chat', data); // echo the data back
 			this._socket.broadcast.emit('chat', data);
 		});
 	}

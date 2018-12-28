@@ -4,7 +4,7 @@ export default class Game extends Phaser.Scene {
 
     preload() {
         this.player = null;
-        this.players = [];
+        this.players = new Map();
         this.client = new Client();
 
         this.load.image("background", "assets/background.png");
@@ -39,13 +39,24 @@ export default class Game extends Phaser.Scene {
             }
             if (event.keyCode === 8 && this.chat.text.length > 0) {
                 this.chat.text = this.chat.text.substr(0, this.chat.text.length - 1);
-            } else if (event.keyCode === 32 || (event.keyCode >= 48 && event.keyCode < 90)) {
+            } else if (this.chat.text.length < 65 &&
+                        (event.keyCode === 32 ||
+                        (event.keyCode >= 48  && event.keyCode < 91)  ||
+                        (event.keyCode >= 106 && event.keyCode < 112) ||
+                            (event.keyCode >= 144))) {
                 this.chat.text += event.key;
             } else if (event.keyCode === 13 && this.chat.text.length) {
                 this.client.sendMessage(this.chat.text);
                 this.chat.text = "";
             }
         });
+
+        this.chatHistoryBox = this.add.graphics();
+        this.chatHistoryBox.fillStyle(0xeeeeee, 1);
+        this.chatHistoryBox.fillRect(0, this.sys.canvas.height - 250, this.sys.canvas.width / 2, 200);
+        this.chatHistoryBox.alpha = 0.75;
+
+        this.chatHistory = this.add.text(15, this.sys.canvas.height - 250, "\n\n\n\n\n\n\n\n\n\n", { font: "16px Arial", fill:"#111111"});
 
         this.client.init(this);
     }
@@ -147,7 +158,7 @@ export default class Game extends Phaser.Scene {
 
         this.syncNameTag(player);
 
-        this.players[data.id] = player;
+        this.players.set(data.id, player);
 
         return player;
     }
@@ -165,7 +176,7 @@ export default class Game extends Phaser.Scene {
     }
 
     movePlayer(data) {
-        const toMove = this.players[data.id];
+        const toMove = this.players.get(data.id);
 
         if (!toMove) {
             console.log("Tried to move non-existent player with id: " + data.id);
@@ -186,7 +197,7 @@ export default class Game extends Phaser.Scene {
     }
 
     removePlayer(data) {
-        const toRemove = this.players[data.id];
+        const toRemove = this.players.get(data.id);
 
         if (!toRemove) {
             console.log("Tried to remove non-existent player with id: " + data.id);
@@ -197,11 +208,22 @@ export default class Game extends Phaser.Scene {
         toRemove.text.destroy();
         toRemove.rectangle.destroy();
 
-        this.players.splice(data.id, 1);
+        this.players.delete(data.id);
     }
 
     displayMessage(data) {
-        const player = this.players[data.id];
+        const player = this.players.get(data.id);
+
+        if (!player) {
+            console.log("Tried to provide chat for non-existent player with id: " + data.id);
+            return;
+        }
+
+        this.chatHistory.text = this.chatHistory.text.substr(this.chatHistory.text.indexOf("\n") + 1);
+
+        this.chatHistory.text += (player.name + ": " + data.text);
+        this.chatHistory.text += '\n';
+
         console.log(player.name + ": " + data.text);
     }
 }
